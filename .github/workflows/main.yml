@@ -51,6 +51,12 @@ jobs:
         run: terraform plan -out=tfplan
         working-directory: ./root
 
+      - name: Upload Terraform Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: root/tfplan   
+
   Terraform-Deploy:
     name: Infrastructure apply
     runs-on: ubuntu-latest
@@ -67,7 +73,12 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }} 
-      
+
+      - name: Download Terraform Plan
+        uses: actions/download-artifact@v4
+        with:
+          name: tfplan
+          path: root
       - name: HashiCorp - Setup Terraform
         uses: hashicorp/setup-terraform@v3
         
