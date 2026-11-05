@@ -24,7 +24,7 @@ jobs:
       - name: Run Checkov Security Scan
         uses: bridgecrewio/checkov-action@v12.1347.0
         with:
-          directory: ./infrastructure-pipeline
+          directory: ./root
           soft_fail: true
 
       - name: Azure login
@@ -41,15 +41,15 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-        working-directory: ./infrastructure-pipeline
+        working-directory: ./root
 
       - name: Terraform Validate
         run: terraform validate
-        working-directory: ./infrastructure-pipeline
+        working-directory: ./root
       
       - name: Terraform Plan
         run: terraform plan -out=tfplan
-        working-directory: ./infrastructure-pipeline
+        working-directory: ./root
 
   Terraform-Deploy:
     name: Infrastructure apply
@@ -74,8 +74,8 @@ jobs:
       
       - name: Terraform Init
         run: terraform init
-        working-directory: ./infrastructure-pipeline
+        working-directory: ./root
 
       - name: Terraform Apply
         run: terraform apply --auto-approve
-        working-directory: ./infrastructure-pipeline
+        working-directory: ./root
